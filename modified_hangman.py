@@ -35,20 +35,46 @@ def gameMenu():
     option1 = "1. Proceed"
     option2 = "2. Cancel"
     option3 = "3. Help"
-    options = [option1, option2, option3]
+    option4 = "4. Quit"
+    options = [option1, option2, option3, option4]
     for x in options:
-        time.sleep(0.5)
+        time.sleep(0.2)
         print(f"{'':30s}" + cl(f" {x} ", 'blue'))
         time.sleep(1.5)
     entry = input(f"\n{'':40s}" + cl(" [+] ", 'magenta', attrs=['dark']) + " ENTER SELECTION "
-                  + cl(" [+] ", 'magenta', attrs=['dark']) + ": ")
-    if entry == '1':
-        sys.stdout.flush()
-        time.sleep(1)
-        f = Figlet(font="standard")
-        print(cl(f.renderText(f"{'':20s}!^Hangman^^!"), 'red'))
-        time.sleep(2)
-        play_game()
+                + cl(" [+] ", 'magenta', attrs=['dark']) + ": ")
+    try:
+        if entry == '1':
+            sys.stdout.flush()
+            time.sleep(1)
+            f = Figlet(font="standard")
+            print(cl(f.renderText(f"{'':20s}!^Hangman^^!"), 'red'))
+            time.sleep(2)
+            play_game()
+        elif entry == "2":
+            print(cl(f"{'':40s}Hi! You canceled the game!"))
+            sys.exit(0)
+        elif entry == "3":
+            time.sleep(0.2)
+            print(cl(f"""{'':40s}
+            This game involves quessing in which you have to 
+            guess a word and feed in the word letter by letter
+            The computer will make comparison between the entered letter 
+            and the stored word and check if the letter exist in any of the words
+            if so you'll be given a chance to proceed guessing
+            If the word does not exist the the computer will print alert you and 
+            then the remaining chances will also be reduced
+            
+            If you fail to get it correctly then the computer will shw you the 
+            actual word
+            The words are chosen based on the letters you chose
+            """, 'green'))
+            gameMenu()
+        elif entry == "4":
+            sys.exit(0)
+    except ValueError as er:
+        print(er.with_traceback)
+        gameMenu()
 
 
 def mainFunctionInvite():
@@ -136,6 +162,9 @@ def play_game():
                 print(f"{'':39s} OUPS! YOU LOSS ! SCORES = {SCORES} \n{'':39s} RIGHT-WORD: " +
                       cl(f"{word.upper()}", "red")
                       + f" \n{'':39s} YOUR SELECTION: " + cl(f"{''.join([x for x in wrong_guess])}", 'red'))
+                for word in words_to_guess:
+                    print(f"{'':39s} The words to be selected are!")
+                return word[:]
 
 
 mainFunctionInvite()
